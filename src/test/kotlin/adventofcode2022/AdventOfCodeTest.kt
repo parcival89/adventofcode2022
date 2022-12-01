@@ -3,7 +3,7 @@ package adventofcode2022
 import java.io.File
 import kotlin.test.Test
 
-private const val resourceDir = "/Users/sander/projects/kunlabora/adventofcode2022/app/src/test/resources"
+private const val resourceDir = "/Users/sander/projects/kunlabora/adventofcode2022/src/test/resources"
 
 class AdventOfCodeTest {
     @Test
