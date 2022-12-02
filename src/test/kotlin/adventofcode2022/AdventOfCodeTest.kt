@@ -2,6 +2,7 @@ package adventofcode2022
 
 import adventofcode2022.domain.Elf
 import adventofcode2022.domain.Expedition
+import adventofcode2022.domain.RockPaperScissorsSimulator
 import adventofcode2022.elf.ElfRepositoryImpl
 import kotlin.test.Test
 
@@ -27,4 +28,20 @@ class AdventOfCodeTest {
     private fun createExpedition(): Expedition {
         return Expedition(ElfRepositoryImpl().findAll())
     }
+
+    @Test
+    fun `Day 2 - Rock Paper Scissors - Follow the strategy guide`() {
+        val score = readFile("day2.txt")
+            .map {
+                val splittedLine = it.split(" ")
+                splittedLine[0] to splittedLine[1]
+            }
+            .map { RockPaperScissorsSimulator.playRound(it.first, it.second) }
+            .sum()
+        println(score)
+    }
+
+    fun readFile(fileName: String): List<String> =
+        {}::class.java.classLoader.getResourceAsStream(fileName)?.reader()?.readLines()
+            ?: error("Could not load $fileName")
 }
