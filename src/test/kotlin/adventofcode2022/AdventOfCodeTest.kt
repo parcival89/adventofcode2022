@@ -30,13 +30,25 @@ class AdventOfCodeTest {
     }
 
     @Test
-    fun `Day 2 - Rock Paper Scissors - Follow the strategy guide`() {
+    fun `Day 2 - Rock Paper Scissors - Follow the strategy guide by winning it all`() {
         val score = readFile("day2.txt")
             .map {
                 val splittedLine = it.split(" ")
                 splittedLine[0] to splittedLine[1]
             }
             .map { RockPaperScissorsSimulator.playRound(it.first, it.second) }
+            .sum()
+        println(score)
+    }
+
+    @Test
+    fun `Day 2 - Rock Paper Scissors - Follow the strategy guide consciously`() {
+        val score = readFile("day2.txt")
+            .map {
+                val splittedLine = it.split(" ")
+                splittedLine[0] to splittedLine[1]
+            }
+            .map { RockPaperScissorsSimulator.playRoundConsciously(it.first, it.second) }
             .sum()
         println(score)
     }
