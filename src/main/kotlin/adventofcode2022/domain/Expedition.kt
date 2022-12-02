@@ -1,4 +1,4 @@
-package adventofcode2022
+package adventofcode2022.domain
 
 class Expedition(val elves: List<Elf>) {
 
