@@ -12,14 +12,14 @@ class ElfRepositoryImpl : ElfRepository {
             if (it.isNotEmpty()) {
                 calorieValues.add(it.toInt())
             } else {
-                elves.add(Elf.from(calorieValues))
+                elves.add(Elf(calorieValues))
                 calorieValues.clear()
             }
         }
         return elves
     }
 
-    private fun readInput(filename: String) = File("${Companion.resourcesDir}/${filename}.txt").readLines()
+    private fun readInput(filename: String) = File("${resourcesDir}/${filename}.txt").readLines()
 
     companion object {
         private const val resourcesDir = "/Users/sander/projects/kunlabora/adventofcode2022/src/test/resources"

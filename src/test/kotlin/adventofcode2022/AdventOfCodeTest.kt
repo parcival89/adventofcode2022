@@ -10,7 +10,7 @@ class AdventOfCodeTest {
     fun `Day 1 - Calorie maxxer`() {
         val foodMaster = createExpedition()
             .findElvesWithMostFood(1)
-            .map(Elf::calories)
+            .map(Elf::countedCalories)
             .reduce(Int::plus)
         println(foodMaster)
     }
@@ -19,7 +19,7 @@ class AdventOfCodeTest {
     fun `Day 1 - Calorie triarch`() {
         val triarch = createExpedition()
             .findElvesWithMostFood(3)
-            .map(Elf::calories)
+            .map(Elf::countedCalories)
             .reduce(Int::plus)
         println(triarch)
     }

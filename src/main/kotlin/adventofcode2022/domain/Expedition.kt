@@ -1,10 +1,10 @@
 package adventofcode2022.domain
 
-class Expedition(val elves: List<Elf>) {
+class Expedition(private val elves: List<Elf>) {
 
     fun findElvesWithMostFood(amount: Int): List<Elf> {
         return elves
-            .sortedByDescending { elf -> elf.calories }
+            .sortedByDescending(Elf::countedCalories)
             .take(amount)
     }
 }
