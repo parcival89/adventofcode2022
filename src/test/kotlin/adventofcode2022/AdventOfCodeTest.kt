@@ -53,6 +53,36 @@ class AdventOfCodeTest {
         println(score)
     }
 
+    @Test
+    fun `Day 3 - Rucksack prioritizing`() {
+        val sum = readFile("day3.txt")
+            .map { it.subSequence(0, it.length / 2) to it.subSequence(it.length / 2, it.length) }
+            .map { rucksack -> rucksack.first.filter { rucksack.second.contains(it) }.first() }
+            .map { "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".indexOf(it) + 1 }
+            .sum()
+        println(sum)
+    }
+
+    @Test
+    fun `Day 3 - Badge counting`() {
+        val groups = mutableListOf<List<String>>()
+        var group = mutableListOf<String>()
+        readFile("day3.txt")
+            .forEach {
+                group.add(it)
+                if (group.size == 3) {
+                    groups.add(group)
+                    group = mutableListOf()
+                }
+            }
+
+        val sum = groups
+            .map { items -> items[0].filter { item -> item in items[1] && item in items[2] }.first() }
+            .map { "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".indexOf(it) + 1 }
+            .sum()
+        println(sum)
+    }
+
     fun readFile(fileName: String): List<String> =
         {}::class.java.classLoader.getResourceAsStream(fileName)?.reader()?.readLines()
             ?: error("Could not load $fileName")
