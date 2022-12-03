@@ -1,8 +1,6 @@
 package adventofcode2022
 
-import adventofcode2022.domain.Elf
-import adventofcode2022.domain.Expedition
-import adventofcode2022.domain.RockPaperScissorsSimulator
+import adventofcode2022.domain.*
 import adventofcode2022.elf.ElfRepositoryImpl
 import kotlin.test.Test
 
@@ -26,7 +24,7 @@ class AdventOfCodeTest {
     }
 
     private fun createExpedition(): Expedition {
-        return Expedition(ElfRepositoryImpl().findAll())
+        return Expedition(ElfRepositoryImpl().loadAllCalories())
     }
 
     @Test
@@ -55,30 +53,29 @@ class AdventOfCodeTest {
 
     @Test
     fun `Day 3 - Rucksack prioritizing`() {
-        val sum = readFile("day3.txt")
-            .map { it.subSequence(0, it.length / 2) to it.subSequence(it.length / 2, it.length) }
-            .map { rucksack -> rucksack.first.filter { rucksack.second.contains(it) }.first() }
-            .map { "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".indexOf(it) + 1 }
+        val newSum = ElfRepositoryImpl().loadAllRucksacks()
+            .map(Rucksack::findMatchingItem)
+            .map(ItemType::priorityScore)
             .sum()
-        println(sum)
+        println(newSum)
     }
 
     @Test
     fun `Day 3 - Badge counting`() {
-        val groups = mutableListOf<List<String>>()
-        var group = mutableListOf<String>()
-        readFile("day3.txt")
+        val groups = mutableListOf<BadgeGroup>()
+        var group = mutableListOf<Rucksack>()
+        ElfRepositoryImpl().loadAllRucksacks()
             .forEach {
                 group.add(it)
                 if (group.size == 3) {
-                    groups.add(group)
+                    groups.add(BadgeGroup(group.toList()))
                     group = mutableListOf()
                 }
             }
 
         val sum = groups
-            .map { items -> items[0].filter { item -> item in items[1] && item in items[2] }.first() }
-            .map { "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".indexOf(it) + 1 }
+            .map(BadgeGroup::findBadge)
+            .map(ItemType::priorityScore)
             .sum()
         println(sum)
     }

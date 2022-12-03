@@ -1,5 +1,6 @@
 package adventofcode2022.domain
 
 interface ElfRepository {
-    fun findAll() : List<Elf>
+    fun loadAllCalories() : List<Elf>
+    fun loadAllRucksacks() : List<Rucksack>
 }
