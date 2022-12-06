@@ -97,6 +97,91 @@ class AdventOfCodeTest {
         println(overlappingAssignments)
     }
 
+    @Test
+    fun `Day5 - rearranging`() {
+        val input = readFile("day5.txt")
+        val grid = mutableMapOf(
+            1 to listOf<String>(),
+            2 to listOf(),
+            3 to listOf(),
+            4 to listOf(),
+            5 to listOf(),
+            6 to listOf(),
+            7 to listOf(),
+            8 to listOf(),
+            9 to listOf()
+        )
+
+        fillGrid(input, grid)
+        println(grid)
+        executeCommands(input, grid, false)
+
+        println(grid)
+        println(grid.map { it.value.first() })
+    }
+
+    @Test
+    fun `Day 5 - rearrange multiple crates at once`() {
+        val input = readFile("day5.txt")
+        val grid = mutableMapOf(
+            1 to listOf<String>(),
+            2 to listOf(),
+            3 to listOf(),
+            4 to listOf(),
+            5 to listOf(),
+            6 to listOf(),
+            7 to listOf(),
+            8 to listOf(),
+            9 to listOf()
+        )
+
+        fillGrid(input, grid)
+        println(grid)
+        executeCommands(input, grid, true)
+
+        println(grid)
+        println(grid.map { it.value.firstOrNull() })
+    }
+
+    private fun executeCommands(input: List<String>, grid: MutableMap<Int, List<String>>, multipleCrates: Boolean) {
+        input
+            .filter { it.isNotBlank() && it.startsWith("move") }
+            .forEach { command -> execute(command, grid, multipleCrates) }
+    }
+
+    private fun execute(command: String, grid: MutableMap<Int, List<String>>, multipleCrates: Boolean) {
+        // move 8 from 8 to 5
+        val split = command.split(" ")
+        val numberOfCrates = split[1].toInt()
+        val from = split[3].toInt()
+        val to = split[5].toInt()
+
+        if (multipleCrates) {
+            val crates = grid[from]!!.take(numberOfCrates)
+            grid[from] = grid[from]!! - crates
+            grid[to] = crates + grid[to]!!
+        } else {
+            (1..numberOfCrates)
+                .forEach {
+                    val crate = grid[from]!!.first()
+                    grid[from] = grid[from]!! - crate
+                    grid[to] = listOf(crate) + grid[to]!!
+                }
+        }
+    }
+
+    private fun fillGrid(input: List<String>, grid: MutableMap<Int, List<String>>) {
+        input.takeWhile { it.isNotEmpty() && it.contains("[") }
+            .forEach { value ->
+                intArrayOf(1, 5, 9, 13, 17, 21, 25, 29, 33).mapIndexed { index, it ->
+                    if (value.length > it && value[it].isLetter()) {
+                        val crateValue = value[it].toString()
+                        grid[index + 1] = (grid[index + 1]!!.plus(crateValue)).toList()
+                    }
+                }
+            }
+    }
+
     private fun checkOverlap(sections: List<String>): Boolean {
         val first = splitBoundaries(sections.first())
         val last = splitBoundaries(sections.last())
@@ -106,7 +191,7 @@ class AdventOfCodeTest {
     private fun checkAnyOverlap(sections: List<String>): Boolean {
         val first = splitBoundaries(sections.first())
         val last = splitBoundaries(sections.last())
-        return !( hasNoOverlap(first, last) && hasNoOverlap(last, first))
+        return !(hasNoOverlap(first, last) && hasNoOverlap(last, first))
     }
 
     private fun overlapsCompletely(overlapper: Pair<Int, Int>, overlappee: Pair<Int, Int>): Boolean {
@@ -114,7 +199,7 @@ class AdventOfCodeTest {
     }
 
     private fun splitBoundaries(sections: String): Pair<Int, Int> {
-        val boundaries =  sections.split("-").map { it.toInt() }
+        val boundaries = sections.split("-").map { it.toInt() }
         return boundaries.first() to boundaries.last()
     }
 
