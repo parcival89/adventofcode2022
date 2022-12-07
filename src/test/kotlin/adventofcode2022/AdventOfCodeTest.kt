@@ -121,7 +121,7 @@ class AdventOfCodeTest {
     }
 
     @Test
-    fun `Day 5 - rearrange multiple crates at once`() {
+    fun `Day5 - rearrange multiple crates at once`() {
         val input = readFile("day5.txt")
         val grid = mutableMapOf(
             1 to listOf<String>(),
@@ -141,6 +141,34 @@ class AdventOfCodeTest {
 
         println(grid)
         println(grid.map { it.value.firstOrNull() })
+    }
+
+    @Test
+    fun `Day6 - detect message start`() {
+        val input = readFile("day6.txt").first()
+        val messageStart = findMessageStart(input)
+        println(messageStart)
+    }
+
+    @Test
+    fun `Day6 - detect message`() {
+        val input = readFile("day6.txt").first()
+        val messageStart = findMessage(input)
+        println(messageStart)
+    }
+
+    private fun findMessageStart(input: String): Int{
+        return allDifferentCharacters(input, 0, 4)
+    }
+
+    private fun findMessage(input: String): Int{
+        return allDifferentCharacters(input, 0, 14)
+    }
+
+    private fun allDifferentCharacters(input: String, startAt: Int, length: Int) : Int{
+        if(input.subSequence(startAt, startAt + length).toSet().size == length){
+            return startAt + length
+        }else return allDifferentCharacters(input, startAt + 1, length)
     }
 
     private fun executeCommands(input: List<String>, grid: MutableMap<Int, List<String>>, multipleCrates: Boolean) {
