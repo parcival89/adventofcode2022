@@ -155,10 +155,11 @@ class AdventOfCodeTest {
         val numberOfCrates = split[1].toInt()
         val from = split[3].toInt()
         val to = split[5].toInt()
+        println(command)
 
         if (multipleCrates) {
-            val crates = grid[from]!!.take(numberOfCrates)
-            grid[from] = grid[from]!! - crates
+            val crates = grid[from]!!.subList(0, numberOfCrates)
+            grid[from] = grid[from]!!.subList(numberOfCrates, grid[from]!!.size)
             grid[to] = crates + grid[to]!!
         } else {
             (1..numberOfCrates)
@@ -168,6 +169,8 @@ class AdventOfCodeTest {
                     grid[to] = listOf(crate) + grid[to]!!
                 }
         }
+        print(grid)
+        println()
     }
 
     private fun fillGrid(input: List<String>, grid: MutableMap<Int, List<String>>) {
